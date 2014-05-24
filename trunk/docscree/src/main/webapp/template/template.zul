@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<?page title="DocScree - Documentation on Screen" contentType="text/html;charset=UTF-8"?>
+<zk xmlns:n="native">
+	<style src="/css/style.css" />
+	<style src="/css/menu.css" />
+	
+	<div style="margin-right: 5%; margin-left: 5%;" >
+	
+		<div id="top" sclass="top" align="center">
+			<image src="/imagens/topo.png" />
+		</div>
+		<div id="topRight" sclass="topRight" apply="${usuarioCompositor}">
+			<label value="Olá"/>
+			<label id="aNomeUsuario" onClick="gerenciador.acaoEditarProprioUsuario()" value="@{gerenciador.nomeUsuarioLogado}" style="cursor: pointer;" />
+			<a onClick="gerenciador.acaoDeslogar()" label="Logout" style="padding-left: 3px;"/>
+		</div>
+		<div id="menu" sclass="menu">
+			<menubar >
+				<menuitem label="Usuário" href="/pages/usuario.zul" width="100px;"/>
+				<menuitem label="Equipe" href="/pages/equipe.zul" width="100px;"/>
+				<menu label="Modelo" width="100px;">
+					<menupopup apply="${modeloCompositor }">
+						<menuitem label="Novo"  onClick="gerenciador.acaoNovoModelo()" />
+						<menuitem label="Abrir" onClick="gerenciador.acaoSelecionarAbrirModelo()" />
+					</menupopup>
+				</menu>
+				<menu label="Projeto" width="100px;">
+					<menupopup>
+						<menuitem label="Abrir" apply="${projetoCompositor}" onClick="gerenciador.acaoAbrir()"/>
+						<menuitem label="Novo" href="/pages/projeto.zul"/>
+					</menupopup>
+				</menu>
+				<menu label="ArtefatoModelo" width="100px;">
+					<menupopup apply="${artefatoCompositor }">
+						<menuitem label="Montar Novo"  onClick="gerenciador.acaoNovoArtefatoModelo()" />
+						<menuitem label="Abrir ArtefatoModelo" onClick="gerenciador.acaoSelecionarArtefatoModelo()" />
+					</menupopup>
+				</menu>
+				<menuitem apply="${modalArtefatoPreenchidoCompositor }" label="Preencher Artefato" onClick="gerenciador.acaoAbrirPreencherArtefato()"/>
+				<menu label="Mapear Componentes" width="150px;">
+					<menupopup>
+						<menuitem label="Mapear TipoMembro" href="/pages/tipomembro.zul"/>
+						<menuitem label="Mapear Serviço" href="/pages/servico.zul" />
+					</menupopup>
+				</menu>
+				<menuitem label="Logs" width="100px;"/>
+			</menubar>
+		</div>
+		<div id="content" self="@{insert(content)}" sclass="content" align="center">
+		</div>
+		<separator height="4px"></separator>
+		<div id="footer" sclass="footer">
+			Copyright 2012 UEG. All rights reserved.
+			<separator />
+			Developer by Diego Carlos.
+		</div>
+	</div>
+</zk>
