@@ -33,7 +33,7 @@ public class TipoMembroControle extends SuperControle {
 				i++;
 			}
 			Retorno<File, String> mapearArquivosTipoMembro = super.getFramework().mapearArquivosTipoMembro(files);
-			((TipoMembroCompositor)super.getVisao()).setArquivos(mapearArquivosTipoMembro.getParametros());
+			((TipoMembroCompositor)super.getVisao()).setTipoMembros(mapearArquivosTipoMembro.getParametros());
 			return true;
 		} else {
 			super.getMensagens().setTipoMensagem(TipoMensagem.ERRO);
