@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template/template.zul"?>
+<?page title="Montar Artefato" contentType="text/html;charset=UTF-8"?>
+
+<zk>
+	<style>
+		
+		<![CDATA[
+
+		.conteudoEsq {
+			position:absolute;
+			width:140px;
+			padding-top: 2px;
+			left:5%;
+			padding-bottom:20px;
+		}
+		.conteudoDir {
+			position:absolute;
+			width:210px;
+			padding-top: 2px;
+			right: 5%;
+			padding-bottom:20px;
+		}
+		.sepEsqcolCentral {
+			margin-left:140px;
+			padding-left:0px;
+		}
+		.colDir {
+			margin:0px;	
+		}
+		.sepcolCentralDir {
+			margin-right:213px;
+		}
+		.colCentral {    
+			padding:2px;
+			text-align:justify;
+		} ]]>
+		
+	</style>
+	<div self="@{define(content)}" id="divMntArtefato"
+		apply="${artefatoCompositor}" onCreate="gerenciador.carregarArtefato()">
+		<div sclass="conteudoEsq">
+			<window width="140px" title="Componentes" border="normal"
+				id="windowComponentes" mode="overlapped" >
+				<listbox model="@{gerenciador.listaTipoMembrosVisao }" selectedItem="@{gerenciador.tipoMembroVisaoSelecionado}"
+					>
+					<listhead>
+						<listheader label="" width="25%" />
+						<listheader label="TipoMembro" />
+					</listhead>
+					<listitem self="@{each=item }" value="@{item}" tooltiptext="@{item.nome }">
+						<listcell>
+							<image content="@{item.imagemZK }" />
+							<attribute name="onClick">
+								gerenciador.setTipoMembroVisaoSelecionado(null);
+								self.getParent().setSelected(true);
+								gerenciador.gerarPaletaParametros(true);
+							</attribute>
+						</listcell>
+						<listcell label="@{item.nome }" >
+							<attribute name="onClick">
+								gerenciador.setTipoMembroVisaoSelecionado(null);
+								self.getParent().setSelected(true);
+								gerenciador.gerarPaletaParametros(true);
+							</attribute>
+						</listcell>
+					</listitem>
+				</listbox>
+			</window>
+		</div>
+		<div sclass="sepEsqcolCentral">
+			<div sclass="colDir">
+				<div sclass="conteudoDir">
+					<window width="220px" title="Propriedades" border="normal"
+						id="windowPaleta">
+					</window>
+					<separator />
+					<window width="210px" title="Serviços" border="normal"
+						id="windowServicos">
+					</window>
+				</div>
+				<div sclass="sepcolCentralDir">
+					<div sclass="colCentral" align="center">
+						<tabbox>
+							<tabs>
+								<tab label="Visão de Preenchimento" />
+								<tab label="Visão de Visualização"  />
+							</tabs>
+							<tabpanels>
+								<tabpanel>
+									<window width="@{gerenciador.larguraString }" border="none" id="windowArtefato" height="@{gerenciador.alturaString }" 
+											style="position: relative; background-color: white; border: 1px solid; overflow: auto;">
+									</window>
+								</tabpanel>
+								<tabpanel>
+									<window width="@{gerenciador.larguraString }" border="none" id="windowArtefatoVisualizacao" height="@{gerenciador.alturaString }"
+											style="position: relative; background-color: white; border: 1px solid; overflow: auto;">
+									</window>
+								</tabpanel>
+							</tabpanels>
+						</tabbox>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<button label="Salvar" onClick="gerenciador.acaoMapearArtefato();"/>
+			<button label="Cancelar" onClick="gerenciador.acaoCancelar();"/>
+		</div>
+	</div>
+</zk>

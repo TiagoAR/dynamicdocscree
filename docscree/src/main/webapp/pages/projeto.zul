@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template/template.zul"?>
+<?page title="Manter Projeto" contentType="text/html;charset=UTF-8"?>
+
+<zk>
+	<groupbox self="@{define(content)}" id="gpBoxProjeto" width="650px"
+		closable="false" apply="${projetoCompositor}">
+		<caption label="Projeto" />
+		<grid sizedByContent="true" style="border: none;">
+			<columns>
+				<column width="170px" />
+				<column width="300px" />
+			</columns>
+			<rows>
+				<row>
+					<label value="Nome:" />
+					<textbox value="@{gerenciador.fldNome}" maxlength="255" />
+				</row>
+				<row>
+					<label value="Descrição:" />
+					<textbox value="@{gerenciador.fldDescricao}" maxlength="255" />
+				</row>
+				<row>
+					<label value="Equipe:" />
+					<combobox model="@{gerenciador.listaEquipes}"
+						width="180px"
+						selectedItem="@{gerenciador.fldEquipe }" >
+						<comboitem self="@{each=item }" value="@{item}"
+							label="@{item.nome }" />
+					</combobox>
+				</row>
+				<row>
+					<label value="Modelo:" />
+					<combobox model="@{gerenciador.listaModelos}"
+						width="180px"
+						selectedItem="@{gerenciador.fldModelo }" >
+						<comboitem self="@{each=item }" value="@{item}"
+							label="@{item.nome }" />
+					</combobox>
+				</row>
+				<row>
+					<label value="Ativo:" />
+					<checkbox checked="@{gerenciador.fldStatus}" />
+				</row>
+				
+			</rows>
+		</grid>
+		<separator />
+		<button label="Salvar" onClick="gerenciador.acaoSalvar()" />
+		<button label="Listar" onClick="gerenciador.acaoListar()" />
+		<button label="Cancelar" onClick="gerenciador.acaoCancelar()" />
+		
+		<window title="Lista de Projetos" border="normal" closable="false"
+		mode="modal" width="750px" visible="false" id="windowLista">
+		<listbox pagingPosition="bottom" mold="paging" pageSize="5"
+			model="@{gerenciador.listaEntidadeModelo }" selectedItem="@{gerenciador.entidade }"
+			id="listboxLista">
+			<auxhead>
+				<auxheader>
+					<textbox value="@{gerenciador.filtroCodigo }" onChange="gerenciador.acaoFiltrar()" instant="true" width="70px"/>
+				</auxheader>
+				<auxheader colspan="2">
+					<textbox value="@{gerenciador.filtroNome }" onChange="gerenciador.acaoFiltrar()" instant="true" width="70px"/>
+				</auxheader>
+				<auxheader>
+					<textbox value="@{gerenciador.filtroEquipe }" onChange="gerenciador.acaoFiltrar()" instant="true" width="70px"/>
+				</auxheader>
+				<auxheader>
+					<textbox value="@{gerenciador.filtroModelo }" onChange="gerenciador.acaoFiltrar()" instant="true" width="70px"/>
+				</auxheader>
+				<auxheader colspan="3"></auxheader>
+			</auxhead>
+			<listhead>
+				<listheader label="Código" />
+				<listheader label="Nome" />
+				<listheader label="Descrição" />
+				<listheader label="Equipe" />
+				<listheader label="Modelo" />
+				<listheader label="Status" />
+				<listheader />
+				<listheader />
+			</listhead>
+			<listitem self="@{each=item }" value="@{item}">
+				<listcell label="@{item.codigo }" />
+				<listcell label="@{item.nome }" />
+				<listcell label="@{item.descricao }" />
+				<listcell label="@{item.equipe.nome }" />
+				<listcell label="@{item.modelo.nome }" />
+				<listcell label="@{item.status }" />
+				<listcell>
+						<div align="center">
+							<button label="Editar" width="60px"> 
+								<attribute name="onClick">
+									self.getParent().getParent().getParent().setSelected(true);
+									gerenciador.acaoEditar();
+								</attribute>
+							</button>
+						</div>
+				</listcell>
+				<listcell>
+						<div align="center">
+							<button label="Desativar" width="60px">
+								<attribute name="onClick">
+									self.getParent().getParent().getParent().setSelected(true);
+									gerenciador.acaoExcluir();
+								</attribute>
+							</button>
+						</div>
+				</listcell>
+			</listitem>
+		</listbox>
+		<vlayout>
+			<checkbox label="Exibir equipes inativas" checked="@{gerenciador.exibirInativos}" 
+							onClick="gerenciador.acaoFiltrar()" />
+			<div align="center">			
+				<button label="Fechar" onClick="gerenciador.fecharModalLista()" />
+			</div>
+		</vlayout>
+	</window>
+	</groupbox>
+	
+	
+	
+</zk>

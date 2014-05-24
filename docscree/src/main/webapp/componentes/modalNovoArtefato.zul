@@ -1,0 +1,41 @@
+<?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
+<window id="modalNovoArtefato" title="Novo ArtefatoModelo"
+	border="normal" apply="${artefatoCompositor }" closable="false"
+	action="show: slideDown;hide: slideUp" position="center,center"
+	width="550px">
+	<vlayout>
+		<label value="Defina as propriedades do Artefato:" />
+		<grid>
+			<columns>
+				<column width="100px" />
+				<column width="250px" />
+			</columns>
+			<rows>
+				<row>
+					<label value="Nome:" />
+					<textbox width="180px" id="nomeArtefato" onOK="descricaoArtefato.focus()"
+						value="@{gerenciador.nome }" maxlength="255"/>
+				</row>
+				<row>
+					<label value="Descrição" />
+					<textbox width="180px" id="descricaoArtefato" onOK="alturaArtefato.focus()"
+						value="@{gerenciador.descricao }" maxlength="255"/>
+				</row>
+				<row>
+					<label value="Altura:" />
+					<intbox width="180px" id="alturaArtefato" onOK="larguraArtefato.focus()"
+						value="@{gerenciador.altura }"/>
+				</row>
+				<row>
+					<label value="Largura:" />
+					<intbox width="180px" id="larguraArtefato" onOK="gerenciador.exibirNovoArtefato();" 
+						value="@{gerenciador.largura }"/>
+				</row>
+			</rows>
+		</grid>
+		<cell align="center">
+			<button label="Criar" onClick="gerenciador.exibirNovoArtefato();" />
+			<button label="Cancelar" onClick="gerenciador.acaoFecharModal();" />
+		</cell>
+	</vlayout>
+</window>
