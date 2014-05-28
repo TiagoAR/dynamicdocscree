@@ -32,25 +32,13 @@ import br.ueg.unucet.docscree.utilitarios.UploadArquivo;
 @Component
 @Scope("session")
 public class TipoMembroCompositor extends
-		SuperCompositor<TipoMembroControle> {
+SuperMapeavelCompositor<TipoMembroControle> {
 
 	/**
 	 * DEFAULT SERIAL ID
 	 */
 	private static final long serialVersionUID = 955019688639995178L;
 	private static final String pendente = "Pendente!";
-	
-	/**
-	 * Mapa de arquivos a serem salvos no framework
-	 */
-	@AtributoVisao(isCampoEntidade= false, nome="tipoMembros")
-	private Map<File, String> tipoMembros = new HashMap<File, String>();
-	
-	/**
-	 * Arquivo selecionado para ser removido
-	 */
-	private ArquivoCarregado arquivoSelecionado;
-
 	/**
 	 * Efetua o upload do arquivo para o servidor
 	 * @param event
@@ -71,7 +59,7 @@ public class TipoMembroCompositor extends
 						fos.write(media.getByteData());
 						fos.flush();
 						fos.close();
-						getTipoMembros().put(new File(arquivo), pendente);
+						getArquivos().put(new File(arquivo), pendente);
 					}
 				} else {
 					resultado = false;
@@ -97,69 +85,4 @@ public class TipoMembroCompositor extends
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Remove o arquivo do TipoMembro selecionado
-	 */
-	public void removerTipoMembro() {
-		try {
-			super.binder.saveAll();
-			getTipoMembros().remove(getArquivoSelecionado().getFile());
-			super.binder.loadAll();
-		} catch (Exception e) {
-		}
-	}
-	
-	/**
-	 * Cria lista dos arquivos a serem mapeados
-	 * @return arquivoCarregados lista dos ArquivosCarregados
-	 */
-	public List<ArquivoCarregado> getArquivosCarregados() {
-		List<ArquivoCarregado> arquivoCarregados = new ArrayList<ArquivoCarregado>();
-		for (File arquivo : getTipoMembros().keySet()) {
-			ArquivoCarregado arquivoCarregado = new ArquivoCarregado();
-			arquivoCarregado.setFile(arquivo);
-			arquivoCarregado.setNomeArquivo(arquivo.getName());
-			arquivoCarregado.setSituacao(getTipoMembros().get(arquivo));
-			arquivoCarregados.add(arquivoCarregado);
-		}
-		return arquivoCarregados;
-	}
-	
-	/**
-	 * Cancela ação de mapeamento do TipoMembro
-	 */
-	public void acaoCancelar() {
-		setTipoMembros(new HashMap<File, String>());
-		super.binder.loadAll();
-	}
-
-	/**
-	 * @return Map<File,String> o(a) tipoMembros
-	 */
-	public Map<File, String> getTipoMembros() {
-		return tipoMembros;
-	}
-
-	/**
-	 * @param tipoMembros o(a) tipoMembros a ser setado(a)
-	 */
-	public void setTipoMembros(Map<File, String> tipoMembros) {
-		this.tipoMembros = tipoMembros;
-	}
-
-	/**
-	 * @return ArquivoCarregado o(a) arquivoSelecionado
-	 */
-	public ArquivoCarregado getArquivoSelecionado() {
-		return arquivoSelecionado;
-	}
-
-	/**
-	 * @param arquivoSelecionado o(a) arquivoSelecionado a ser setado(a)
-	 */
-	public void setArquivoSelecionado(ArquivoCarregado arquivoSelecionado) {
-		this.arquivoSelecionado = arquivoSelecionado;
-	}
-
 }
