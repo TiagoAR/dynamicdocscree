@@ -23,7 +23,7 @@ public class TipoMembroControle extends SuperControle {
 	 * @return boolean se TipoMembro foi mapeado
 	 */
 	public boolean acaoMapearTipoMembro() {
-		Map<File, String> tipoMembros = (Map<File, String>) getMapaAtributos().get("tipoMembros");
+		Map<File, String> tipoMembros = (Map<File, String>) getMapaAtributos().get("arquivos");
 		if (!tipoMembros.isEmpty()) {
 			File[] files = new File[tipoMembros.size()];
 			int i = 0;
@@ -33,7 +33,7 @@ public class TipoMembroControle extends SuperControle {
 				i++;
 			}
 			Retorno<File, String> mapearArquivosTipoMembro = super.getFramework().mapearArquivosTipoMembro(files);
-			((TipoMembroCompositor)super.getVisao()).setTipoMembros(mapearArquivosTipoMembro.getParametros());
+			((TipoMembroCompositor)super.getVisao()).setArquivos(mapearArquivosTipoMembro.getParametros());
 			return true;
 		} else {
 			super.getMensagens().setTipoMensagem(TipoMensagem.ERRO);
