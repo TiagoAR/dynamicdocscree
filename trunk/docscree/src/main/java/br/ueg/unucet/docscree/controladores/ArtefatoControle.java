@@ -193,7 +193,7 @@ public class ArtefatoControle extends SuperArtefatoControle{
 		criarParametrosSuperServico(parametros);
     	parametros.add(criarParametroString("HOST", "localhost:5432" ));
     	parametros.add(criarParametroString("BANCO_DADOS", "persistService"));
-    	parametros.add(criarParametroString("USUARIO", "postgres"));
+    	parametros.add(criarParametroString("USUARIO_BANCO", "postgres"));
     	parametros.add(criarParametroString("PASSWORD","postgres"));
     	parametros.add(criarParametroLong("ID_ARTEFATO_PREENCHIDO", 1l));
 		parametros.add(criarParametroInteiro("VERSAO", 1));

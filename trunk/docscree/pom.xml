@@ -94,7 +94,7 @@
         <groupId>org.apache.tomcat</groupId>
         <artifactId>tomcat-servlet-api</artifactId>
         <version>7.0.22</version>
-        <scope>compile</scope>
+        <scope>provided</scope>
     </dependency>
 
 		<dependency>
