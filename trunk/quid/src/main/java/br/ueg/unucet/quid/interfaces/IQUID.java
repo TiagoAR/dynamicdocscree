@@ -1,6 +1,7 @@
 package br.ueg.unucet.quid.interfaces;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Collection;
 
 import br.ueg.unucet.quid.dominios.Artefato;
@@ -12,6 +13,7 @@ import br.ueg.unucet.quid.dominios.Modelo;
 import br.ueg.unucet.quid.dominios.Projeto;
 import br.ueg.unucet.quid.dominios.Retorno;
 import br.ueg.unucet.quid.dominios.Usuario;
+import br.ueg.unucet.quid.excessoes.ServicoExcessao;
 import br.ueg.unucet.quid.extensao.dominios.Membro;
 import br.ueg.unucet.quid.extensao.interfaces.IParametro;
 import br.ueg.unucet.quid.extensao.interfaces.IServico;
@@ -279,5 +281,5 @@ public interface IQUID {
 	Retorno<String, Object> executaServico(String nomeServico,
 			Integer versao, Integer revisao,
 			Collection<IParametro<?>> parametros,
-			ContextoServicos contextoServicos);
+			ContextoServicos contextoServicos) throws ServicoExcessao;
 }
