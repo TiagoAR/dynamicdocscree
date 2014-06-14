@@ -10,7 +10,6 @@ import br.ueg.unucet.docscree.visao.compositor.ServicoCompositor;
 import br.ueg.unucet.quid.dominios.Retorno;
 import br.ueg.unucet.quid.enums.TipoErroEnum;
 import br.ueg.unucet.quid.extensao.interfaces.IParametro;
-import br.ueg.unucet.quid.extensao.interfaces.IServico;
 import br.ueg.unucet.quid.gerenciadorservico.ioc.ContextoServicos;
 
 /**
@@ -54,12 +53,10 @@ public class ServicoControle extends SuperControle {
 	public Retorno<Object, Object> executaServico(String nomeServico, Integer versao, Integer revisao,Collection<IParametro<?>> parametros,ContextoServicos contextoServicos) {
 		Retorno<Object, Object> retorno = new Retorno<Object, Object>();
 		try {
-//			Retorno<String,IServico> retornoServico = super.getFramework().executaServico(nomeServico,versao,revisao,parametros,contextoServicos); 
-//			IServico servico = (IServico) retornoServico.getParametros().get(Retorno.PARAMETRO_NOVA_INSTANCIA); 
-//			servico.setListaParametros(parametros);
-//			Collection<IParametro> executaAcao = servico.executaAcao();
-//			retorno.setSucesso(true);
-//			retorno.adicionarParametro(Retorno.PARAMETRO_LISTA_PARAMETRO_SERVICO, executaAcao);
+			Retorno<String,Object> retornoServico = super.getFramework().executaServico(nomeServico,versao,revisao,parametros,contextoServicos); 
+			Collection<IParametro> resposta = (Collection<IParametro>) retornoServico.getParametros().get(Retorno.PARAMETRO_LISTA_PARAMETRO_SERVICO);
+			retorno.setSucesso(true);
+			retorno.adicionarParametro(Retorno.PARAMETRO_LISTA_PARAMETRO_SERVICO, resposta);
 		} catch (Exception e) {
 			retorno.setSucesso(false);
 			retorno.setErro(e);
