@@ -402,5 +402,9 @@ public class Versionamento {
 	}
 	
 	
+	public File getArquivoVersionado(IVersionavel classe)
+	{
+		return arquivosVersionadosFile.get(arquivosVersionados.get(classe.getNome() + classe.getVersao()));
+	}
 	
 }

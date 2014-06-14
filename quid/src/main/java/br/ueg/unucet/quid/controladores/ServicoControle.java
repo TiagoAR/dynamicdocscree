@@ -16,12 +16,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ueg.unucet.quid.dominios.Retorno;
 import br.ueg.unucet.quid.dominios.Servico;
 import br.ueg.unucet.quid.dominios.TipoMembro;
 import br.ueg.unucet.quid.enums.VersionamentoEnum;
 import br.ueg.unucet.quid.excessoes.QuidExcessao;
 import br.ueg.unucet.quid.excessoes.ServicoExcessao;
 import br.ueg.unucet.quid.excessoes.VersaoExcessao;
+import br.ueg.unucet.quid.extensao.interfaces.IParametro;
 import br.ueg.unucet.quid.extensao.interfaces.IServico;
 import br.ueg.unucet.quid.gerenciadorservico.ioc.ContextoServicos;
 import br.ueg.unucet.quid.interfaces.IDAO;
@@ -59,6 +61,11 @@ public class ServicoControle extends GenericControle<Servico, Long> implements I
 	 * Atributo que armazena um relacionamento entre as classes IServicos a serem mapeadas e seus respectivos arquivos
 	 */
 	private Map<IServico, File> servicosAMapearFile;
+	
+	//TODO JAVADOC
+	private Map<IServico, File> servicosMapeadosFile;
+
+
 	/**
 	 * Atributo que armazena as informacoes de processamento para cada arquivo a ser mapeado.
 	 */
@@ -114,15 +121,12 @@ public class ServicoControle extends GenericControle<Servico, Long> implements I
 	 */
 	public IServico getInstanciaServico(String nome, Integer versao) {
 		try {
-			return this.servicosMapeados.get(nome + versao).getClass().newInstance();
-		} catch (InstantiationException e) {
+			return this.servicosMapeados.get(nome + versao);
+		} catch (Exception e) {
 			// TODO verificar
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 
@@ -457,6 +461,7 @@ public class ServicoControle extends GenericControle<Servico, Long> implements I
 	private void initServicosMapeados() {
 		Map<String, Class<?>> classesMapeadas = this.versionador.getClassesVersionadas();
 		this.servicosMapeados = new HashMap<String, IServico>();
+		this.servicosMapeadosFile = new HashMap<IServico, File>();
 		instanciarClassesServicos(classesMapeadas.values());
 	}
 
@@ -470,6 +475,7 @@ public class ServicoControle extends GenericControle<Servico, Long> implements I
 				IServico servico = (IServico) classe.newInstance();
 				servico = setarTipoMembroModeloNoServico(servico);
 				this.servicosMapeados.put(servico.getNome() + servico.getVersao(), servico);
+				this.servicosMapeadosFile.put(servico,versionador.getArquivoVersionado(servico));
 			} catch (Exception e) {
 				// Essa excessao jamais ira ocorrer pois ja foi verificada pelo
 				// versionador
@@ -554,7 +560,7 @@ public class ServicoControle extends GenericControle<Servico, Long> implements I
 		///TODO Melhorar esta validação
 		if (servico.getRevisao() == revisao)
 		{
-			File jar = servicosAMapearFile.get(servico);
+			File jar = servicosMapeadosFile.get(servico);
 			contextoServicos.carregarServico(servico,jar);
 		}
 		else
@@ -568,6 +574,34 @@ public class ServicoControle extends GenericControle<Servico, Long> implements I
 		///Seta ele no contexto
 		///let's it go
 		
+	}
+
+	@Override
+	public Retorno<String, Object> executaServico(String nomeServico,
+			Integer versao, Integer revisao,
+			Collection<IParametro<?>> parametros,
+			ContextoServicos contextoServicos) throws ServicoExcessao {
+		Retorno<String, Object> retorno = new Retorno<String,Object>();
+		try {
+			carregaServico(nomeServico, versao, revisao, contextoServicos);
+			IServico servico = getInstanciaServico(nomeServico, versao);
+			servico.setListaParametros(parametros);
+			retorno.adicionarParametro(Retorno.PARAMETRO_LISTA_PARAMETRO_SERVICO, contextoServicos.executarServico(servico));
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new ServicoExcessao("Houve um erro na hora de executar o serviço");
+		
+		}
+		return retorno;
+		
+	}
+	
+	public Map<IServico, File> getServicosMapeadosFile() {
+		return servicosMapeadosFile;
+	}
+
+	public void setServicosMapeadosFile(Map<IServico, File> servicosMapeadosFile) {
+		this.servicosMapeadosFile = servicosMapeadosFile;
 	}
 	
 	

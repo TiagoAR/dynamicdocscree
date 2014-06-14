@@ -1,6 +1,7 @@
 package br.ueg.unucet.quid.servicos;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -19,6 +20,7 @@ import br.ueg.unucet.quid.dominios.Retorno;
 import br.ueg.unucet.quid.dominios.Servico;
 import br.ueg.unucet.quid.dominios.TipoMembro;
 import br.ueg.unucet.quid.dominios.Usuario;
+import br.ueg.unucet.quid.excessoes.ServicoExcessao;
 import br.ueg.unucet.quid.extensao.dominios.Membro;
 import br.ueg.unucet.quid.extensao.interfaces.IParametro;
 import br.ueg.unucet.quid.extensao.interfaces.IServico;
@@ -487,12 +489,13 @@ public class QuidService implements IQUID{
 	public Retorno<String, Object> executaServico(String nomeServico,
 			Integer versao, Integer revisao,
 			Collection<IParametro<?>> parametros,
-			ContextoServicos contextoServicos) {
+			ContextoServicos contextoServicos) throws ServicoExcessao {
 		
 		IServicoServico<Servico> servicoServico = (IServicoServico<Servico>) appContext.getBean("ServicoServico");
-		//servicoServico.carregaServico(nomeServico,versao,revisao,contextoServicos);
-		//servicoServico.enviarParaExecucao(nomeServico,versao,revisao,contextoServicos);
-		return null;
+		return servicoServico.executaServico( nomeServico,
+				 versao,  revisao,
+				 parametros,
+				contextoServicos);
 	}
 
 }

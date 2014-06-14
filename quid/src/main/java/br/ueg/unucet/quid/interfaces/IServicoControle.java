@@ -5,8 +5,10 @@ import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Map;
 
+import br.ueg.unucet.quid.dominios.Retorno;
 import br.ueg.unucet.quid.dominios.Servico;
 import br.ueg.unucet.quid.excessoes.ServicoExcessao;
+import br.ueg.unucet.quid.extensao.interfaces.IParametro;
 import br.ueg.unucet.quid.extensao.interfaces.IServico;
 import br.ueg.unucet.quid.gerenciadorservico.ioc.ContextoServicos;
 
@@ -55,5 +57,9 @@ public interface IServicoControle<T, oid> extends IControle<T, oid>{
 	
 	void carregaServico(String nomeServico, Integer versao, Integer revisao,
 			ContextoServicos contextoServicos) throws ServicoExcessao, MalformedURLException;
+
+	Retorno<String, Object> executaServico(String nomeServico, Integer versao, Integer revisao,
+			Collection<IParametro<?>> parametros,
+			ContextoServicos contextoServicos) throws ServicoExcessao;
 	
 }

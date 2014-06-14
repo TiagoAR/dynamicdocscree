@@ -1,9 +1,11 @@
 package br.ueg.unucet.quid.interfaces;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Collection;
 
 import br.ueg.unucet.quid.dominios.Retorno;
+import br.ueg.unucet.quid.excessoes.ServicoExcessao;
 import br.ueg.unucet.quid.extensao.interfaces.IParametro;
 import br.ueg.unucet.quid.extensao.interfaces.IServico;
 import br.ueg.unucet.quid.gerenciadorservico.ioc.ContextoServicos;
@@ -17,6 +19,8 @@ import br.ueg.unucet.quid.gerenciadorservico.ioc.ContextoServicos;
  */
 public interface IServicoServico<T> extends br.ueg.unucet.quid.interfaces.IServico<T> {
 	
+	void carregaServico(String nomeServico, Integer versao,
+			Integer revisao, ContextoServicos contextoServicos) throws ServicoExcessao, MalformedURLException;
 	/*
 	//TODO JAVADOC
 	public Retorno<String, IServico> getInstanciaServico(String nome, Integer versao);
@@ -54,5 +58,9 @@ public interface IServicoServico<T> extends br.ueg.unucet.quid.interfaces.IServi
 	 * @return Retorno da execucao da validacao.
 	 */
 	Retorno <String, Collection<String>> verificarParametrosServico(IServico servico);
+
+	Retorno<String, Object> executaServico(String nomeServico, Integer versao, Integer revisao,
+			Collection<IParametro<?>> parametros,
+			ContextoServicos contextoServicos) throws ServicoExcessao;
 	
 }
