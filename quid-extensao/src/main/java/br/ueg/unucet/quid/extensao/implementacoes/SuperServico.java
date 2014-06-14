@@ -43,6 +43,7 @@ public abstract class SuperServico implements IServico {
 			}
 			parametroResultado.setValorClass(Boolean.TRUE);
 		} catch (Exception e) {
+			e.printStackTrace();
 			parametroResultado.setValorClass(Boolean.FALSE);
 			IParametro<Exception> parametroExcecao = getParametroRespostaExcecao();
 			parametroExcecao.setValorClass(e);
