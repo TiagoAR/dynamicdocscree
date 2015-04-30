@@ -1,0 +1,1 @@
+Uma Descritor de Tela que utiliza o QUID Framework para a construção de documentação de projetos. Este é uma evolução do Descritor de Tela Docscree. Projeto desenvolvido como Trabalho de Curso da Universidade Estadual de Goiás - UnUCET. 2014
